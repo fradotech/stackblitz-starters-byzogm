@@ -36,9 +36,10 @@ export default function Page() {
   }>({});
 
   const removeFromCart = (product: Product) => {
-    setCart(cart.filter((p) => p.id !== product.id));
+    const newCart = cart.filter((p) => p.id !== product.id);
+    setCart(newCart);
     setQuantities(
-      cart.reduce(
+      newCart.reduce(
         (acc, product) => ({ ...acc, [product.id]: product.quantity }),
         {}
       )
@@ -62,7 +63,13 @@ export default function Page() {
           key={product.id}
           {...product}
           isAddedToCart={cart.findIndex((p) => p.id === product.id) >= 0}
-          onAddToCart={(data) => setCart([...cart, data])}
+          onAddToCart={(data) => {
+            setCart([...cart, data]);
+            setQuantities((old) => ({
+              ...old,
+              [data.id]: data.quantity,
+            }));
+          }}
         />
       ))}
       {cart.length > 0 && (
