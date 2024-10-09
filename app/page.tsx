@@ -36,21 +36,18 @@ export default function Page() {
 
   const removeFromCart = (product: Product) => {
     setCart(cart.filter((p) => p.id !== product.id));
-  };
-
-  useEffect(() => {
     setQuantities(
       cart.reduce(
         (acc, product) => ({ ...acc, [product.id]: product.quantity }),
-        {},
-      ),
+        {}
+      )
     );
-  }, [cart]);
+  };
 
   const totalPrice = cart
     .reduce(
       (total, product) => total + product.price * (quantities[product.id] || 1),
-      0,
+      0
     )
     .toFixed(2);
 
