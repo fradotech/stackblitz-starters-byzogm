@@ -6,6 +6,7 @@
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
 import { Button } from "@/components/ui/button";
+import { useMemo } from "react";
 import { useCallback, useEffect, useState } from "react";
 
 type Product = {
@@ -44,12 +45,15 @@ export default function Page() {
     );
   };
 
-  const totalPrice = cart
-    .reduce(
-      (total, product) => total + product.price * (quantities[product.id] || 1),
-      0
-    )
-    .toFixed(2);
+  const totalPrice = useMemo(() => {
+    return cart
+      .reduce(
+        (total, product) =>
+          total + product.price * (quantities[product.id] || 1),
+        0
+      )
+      .toFixed(2);
+  }, [cart, quantities]);
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
